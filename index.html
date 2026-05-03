@@ -1,1 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentHub India — AI Agents Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #22222e;
+    --accent: #ff6b35;
+    --accent2: #00d4aa;
+    --accent3: #7c6aff;
+    --text: #f0f0f5;
+    --muted: #7a7a8c;
+    --glow: rgba(255,107,53,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
 
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 5%;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent); color: #fff;
+    border: none; padding: 10px 22px;
+    border-radius: 8px; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,106,255,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 10% 60%, rgba(0,212,170,0.08) 0%, transparent 50%);
+  }
+  .grid-overlay {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 0.8rem; font-weight: 500; color: var(--accent);
+    margin-bottom: 28px; position: relative; z-index: 1;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -2px; margin-bottom: 24px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 em {
+    font-style: normal; color: var(--accent);
+    position: relative;
+  }
+  h1 em::after {
+    content: '';
+    position: absolute; left: 0; bottom: -4px; right: 0; height: 3px;
+    background: var(--accent); border-radius: 2px;
+    opacity: 0.5;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--muted); max-width: 560px;
+    line-height: 1.7; margin-bottom: 44px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    justify-content: center;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    border: none; padding: 14px 32px;
+    border-radius: 10px; font-size: 1rem;
+    font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    box-shadow: 0 0 30px rgba(255,107,53,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,107,53,0.5); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border); padding: 14px 32px;
+    border-radius: 10px; font-size: 1rem;
+    font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 72px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--text);
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* AGENTS SECTION */
+  section { padding: 100px 5%; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 500px; line-height: 1.7; }
+
+  .agents-header { margin-bottom: 56px; }
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .agent-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    transition: all 0.3s;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent)), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .agent-card:hover { border-color: rgba(255,107,53,0.3); transform: translateY(-4px); }
+  .agent-card:hover::before { opacity: 1; }
+  .agent-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 16px;
+  }
+  .agent-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;
+  }
+  .agent-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .agent-footer { display: flex; align-items: center; justify-content: space-between; }
+  .agent-price {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem; color: var(--accent2);
+  }
+  .agent-tag {
+    font-size: 0.72rem; font-weight: 600; padding: 4px 10px;
+    border-radius: 100px; border: 1px solid;
+  }
+  .tag-new { color: var(--accent); border-color: rgba(255,107,53,0.4); background: rgba(255,107,53,0.08); }
+  .tag-popular { color: var(--accent2); border-color: rgba(0,212,170,0.4); background: rgba(0,212,170,0.08); }
+
+  /* PRICING */
+  .pricing-bg { background: var(--surface); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 56px;
+  }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px;
+    position: relative; transition: all 0.3s;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 40px rgba(255,107,53,0.15);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #fff;
+    font-size: 0.72rem; font-weight: 700; padding: 4px 16px;
+    border-radius: 100px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+  }
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem; font-weight: 800; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .plan-price sup { font-size: 1.2rem; font-weight: 600; vertical-align: super; }
+  .plan-period { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+  .plan-features { list-style: none; margin-bottom: 32px; }
+  .plan-features li {
+    font-size: 0.9rem; padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; color: var(--muted);
+  }
+  .plan-features li:last-child { border-bottom: none; }
+  .plan-features li .check { color: var(--accent2); font-size: 0.9rem; }
+  .plan-btn {
+    width: 100%; padding: 14px;
+    border-radius: 10px; font-size: 0.95rem;
+    font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .plan-btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .plan-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .plan-btn-filled {
+    background: var(--accent); color: #fff; border: none;
+    box-shadow: 0 0 20px rgba(255,107,53,0.3);
+  }
+  .plan-btn-filled:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 56px; }
+  .step { text-align: center; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem;
+    color: var(--accent);
+  }
+  .step-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 10px; }
+  .step-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(124,106,255,0.08));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .cta-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800; letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+  .cta-section p { color: var(--muted); margin-bottom: 36px; font-size: 1.05rem; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 0.8rem; color: var(--muted); }
+
+  /* WHATSAPP FLOAT */
+  .whatsapp-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 200;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #25D366; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    transition: transform 0.2s;
+    text-decoration: none;
+  }
+  .whatsapp-float:hover { transform: scale(1.1); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Agent<span>Hub</span> India</div>
+  <ul class="nav-links">
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    India's #1 AI Agent Marketplace
+  </div>
+  <h1>Your Personal<br><em>AI Agents</em><br>For Everything</h1>
+  <p class="hero-sub">Kharido, deploy karo aur automate karo apni life aur business — 10 powerful AI agents, sirf ek platform par.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('agents').scrollIntoView({behavior:'smooth'})">🤖 Explore Agents</button>
+    <button class="btn-secondary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">View Plans →</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">10<span>+</span></div>
+      <div class="stat-label">AI Agents</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">₹99<span>/mo</span></div>
+      <div class="stat-label">Starting Price</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7<span> Days</span></div>
+      <div class="stat-label">Free Trial</div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents">
+  <div class="agents-header">
+    <div class="section-label">Our Agents</div>
+    <div class="section-title">10 Agents, Infinite Possibilities</div>
+    <p class="section-sub">Har kaam ke liye ek dedicated AI agent — personal use se lekar professional tak.</p>
+  </div>
+  <div class="agents-grid">
+
+    <div class="agent-card" onclick="window.open('https://aakashsainy02-design.github.io/email-writer-agent/index.html','_blank')" style="cursor:pointer">
+      <div class="agent-icon" style="background:rgba(255,107,53,0.12);">📧</div>
+      <div class="agent-name">Email Writer</div>
+      <div class="agent-desc">Professional emails seconds mein — job applications, client mails, follow-ups sab kuch.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-popular">Popular</div>
+        <div class="agent-tag" style="color:var(--accent2);border-color:rgba(0,212,170,0.4);background:rgba(0,212,170,0.08)">Try Now →</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(0,212,170,0.12);">📅</div>
+      <div class="agent-name">Day Planner</div>
+      <div class="agent-desc">Aapka daily schedule smartly organize karo. Priorities set karo, reminders pao.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-new">New</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(124,106,255,0.12);">💰</div>
+      <div class="agent-name">Finance Tracker</div>
+      <div class="agent-desc">Kharcha track karo, budget banao aur savings tips pao — apne phone se hi.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-popular">Popular</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(255,200,50,0.12);">📚</div>
+      <div class="agent-name">Study Assistant</div>
+      <div class="agent-desc">Students ke liye notes, quizzes, summaries aur doubt solving — 24/7 available.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-new">New</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(255,100,100,0.12);">💪</div>
+      <div class="agent-name">Fitness Coach</div>
+      <div class="agent-desc">Personalized workout plans aur diet tips jo aapke goals ke mutabik ho.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-new">New</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(0,180,255,0.12);">📄</div>
+      <div class="agent-name">Resume Builder</div>
+      <div class="agent-desc">ATS-friendly resume aur cover letter minutes mein — job pakki karo.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-popular">Popular</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(255,160,50,0.12);">💼</div>
+      <div class="agent-name">Interview Prep</div>
+      <div class="agent-desc">Mock interviews, common questions aur smart answers — confident banao khud ko.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-popular">Popular</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(200,100,255,0.12);">📱</div>
+      <div class="agent-name">Social Media Agent</div>
+      <div class="agent-desc">Instagram, LinkedIn ke liye viral content ideas aur captions instantly generate karo.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-new">New</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(50,220,150,0.12);">🧠</div>
+      <div class="agent-name">Business Idea Validator</div>
+      <div class="agent-desc">Apna business idea validate karo — market analysis, competition aur profit potential.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-new">New</div>
+      </div>
+    </div>
+
+    <div class="agent-card">
+      <div class="agent-icon" style="background:rgba(255,220,50,0.12);">🛒</div>
+      <div class="agent-name">Shopping Deals Finder</div>
+      <div class="agent-desc">Best deals, price comparison aur discount alerts — paise bachao smartly.</div>
+      <div class="agent-footer">
+        <div class="agent-price">₹99/mo</div>
+        <div class="agent-tag tag-popular">Popular</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="agents-header">
+    <div class="section-label">Process</div>
+    <div class="section-title">3 Simple Steps Mein Shuru Karo</div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Plan Choose Karo</div>
+      <div class="step-desc">Apni zaroorat ke hisaab se Basic, Standard ya Pro plan select karo. 7 din free trial milega.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Agent Select Karo</div>
+      <div class="step-desc">10 agents mein se apni pasand ke agents choose karo aur instantly activate karo.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Automate Karo</div>
+      <div class="step-desc">Agent ko apna task do aur dekho kaise woh seconds mein kaam kar deta hai. Simple hai!</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-bg">
+  <div class="agents-header" style="text-align:center;">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Simple, Affordable Plans</div>
+    <p clas
